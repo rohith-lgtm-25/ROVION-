@@ -107,17 +107,17 @@ export const AIAssistantPage: React.FC<Props> = ({ profile, onQuestCreated }) =>
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       
       {/* Header */}
-      <div className="system-panel" style={{ padding: '20px' }}>
-        <h2 className="system-title-glow" style={{ fontSize: '1.3rem', margin: 0 }}>
-          AI SYSTEM ADVISOR & NLP QUEST MANAGER
-        </h2>
-        <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+      <div className="sl-panel" style={{ padding: '20px 24px' }}>
+        <div className="sl-corner-tr" /><div className="sl-corner-bl" /><div className="sl-corner-br" />
+        <div className="sl-panel-title">AI ORACLE // QUEST FORMULATOR</div>
+        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '8px', fontFamily: 'var(--font-body)' }}>
           Natural language command parsing with confirmation preview, plus real-data performance analysis.
         </p>
       </div>
 
       {/* SECTION 1: Natural Language Quest Parser */}
-      <div className="system-panel" style={{ padding: '24px' }}>
+      <div className="sl-panel" style={{ padding: '24px' }}>
+        <div className="sl-corner-tr" /><div className="sl-corner-bl" /><div className="sl-corner-br" />
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
           <span style={{ fontSize: '1.2rem' }}>⚡</span>
           <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>Natural Language Quest Formulation</h3>
@@ -139,25 +139,17 @@ export const AIAssistantPage: React.FC<Props> = ({ profile, onQuestCreated }) =>
             placeholder="e.g. Finish DBMS assignment by 9 PM, or Study Python for 1 hour..."
             value={command}
             onChange={(e) => setCommand(e.target.value)}
-            style={{
-              flex: 1,
-              padding: '12px 16px',
-              background: 'rgba(15, 23, 42, 0.8)',
-              border: '1px solid var(--border-subtle)',
-              borderRadius: '8px',
-              color: '#fff',
-              fontSize: '0.9rem',
-              outline: 'none',
-            }}
+            className="sl-input"
+            style={{ flex: 1 }}
           />
-          <button type="submit" disabled={parsing} className="btn-system">
-            {parsing ? 'Formulating...' : 'Formulate Quest →'}
+          <button type="submit" disabled={parsing} className="sl-btn sl-btn-primary">
+            {parsing ? 'Formulating...' : 'PARSE ⚡'}
           </button>
         </form>
 
         {/* Quick Sample Prompts */}
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Try samples:</span>
+          <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontFamily: 'var(--font-hud)', letterSpacing: '1px' }}>SAMPLES:</span>
           {sampleCommands.map((s, idx) => (
             <button
               key={idx}
@@ -166,15 +158,7 @@ export const AIAssistantPage: React.FC<Props> = ({ profile, onQuestCreated }) =>
                 setCommand(s);
                 handleParseCommand(s);
               }}
-              style={{
-                padding: '4px 10px',
-                background: 'rgba(255, 255, 255, 0.04)',
-                border: '1px solid var(--border-subtle)',
-                borderRadius: '6px',
-                color: 'var(--text-secondary)',
-                fontSize: '0.75rem',
-                cursor: 'pointer',
-              }}
+              className="sl-tab"
             >
               "{s}"
             </button>
@@ -186,10 +170,9 @@ export const AIAssistantPage: React.FC<Props> = ({ profile, onQuestCreated }) =>
           <div style={{
             marginTop: '20px',
             padding: '20px',
-            background: 'rgba(0, 210, 255, 0.06)',
-            border: '1px solid var(--system-blue)',
-            borderRadius: '10px',
-            boxShadow: '0 0 20px var(--system-blue-glow)',
+            background: 'rgba(0, 15, 35, 0.9)',
+            border: '1px solid var(--cyan)',
+            boxShadow: '0 0 20px var(--cyan-glow)',
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
               <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
@@ -243,16 +226,16 @@ export const AIAssistantPage: React.FC<Props> = ({ profile, onQuestCreated }) =>
               <button
                 type="button"
                 onClick={() => setProposal(null)}
-                className="btn-system-secondary"
+                className="sl-btn sl-btn-ghost"
               >
-                Discard
+                DISCARD
               </button>
               <button
                 type="button"
                 onClick={handleConfirmQuest}
-                className="btn-system-success"
+                className="sl-btn sl-btn-success"
               >
-                Inscribe Quest into System ✓
+                INSCRIBE QUEST ✓
               </button>
             </div>
           </div>
@@ -260,7 +243,8 @@ export const AIAssistantPage: React.FC<Props> = ({ profile, onQuestCreated }) =>
       </div>
 
       {/* SECTION 2: Real-Data AI Performance Advisor */}
-      <div className="system-panel" style={{ padding: '24px' }}>
+      <div className="sl-panel" style={{ padding: '24px' }}>
+        <div className="sl-corner-tr" /><div className="sl-corner-bl" /><div className="sl-corner-br" />
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -275,9 +259,9 @@ export const AIAssistantPage: React.FC<Props> = ({ profile, onQuestCreated }) =>
           <button
             onClick={handleFetchAdvice}
             disabled={advising}
-            className="btn-system"
+            className="sl-btn sl-btn-primary"
           >
-            {advising ? 'Auditing Real Metrics...' : '⚡ Audit Hunter Efficiency'}
+            {advising ? 'AUDITING...' : '⚡ AUDIT EFFICIENCY'}
           </button>
         </div>
 

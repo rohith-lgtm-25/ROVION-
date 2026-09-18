@@ -18,7 +18,7 @@ export const NotificationsPage: React.FC<Props> = ({ notifications, onRefresh })
       const permission = await Notification.requestPermission();
       setBrowserPushStatus(permission);
       if (permission === 'granted') {
-        new Notification('THE SYSTEM // Hunter Interface', {
+        new Notification('ROVION SYSTEM // Hunter Interface', {
           body: 'Browser notifications initialized. Real-time quest reminders active.',
         });
       }
@@ -61,17 +61,27 @@ export const NotificationsPage: React.FC<Props> = ({ notifications, onRefresh })
     return true;
   });
 
+  const getCategoryColor = (cat: string) => {
+    if (cat === 'PENALTY') return 'var(--crimson)';
+    if (cat === 'LEVEL_UP') return 'var(--gold)';
+    if (cat === 'REWARD') return 'var(--green-neon)';
+    return 'var(--cyan)';
+  };
+
+  const FILTER_TABS = ['ALL', 'UNREAD', 'QUEST', 'LEVEL_UP', 'REWARD', 'PENALTY', 'WEEKLY_EVALUATION'] as const;
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       
       {/* Header */}
-      <div className="system-panel" style={{ padding: '20px' }}>
+      <div className="sl-panel" style={{ padding: '20px 24px' }}>
+        <div className="sl-corner-tr" /><div className="sl-corner-bl" /><div className="sl-corner-br" />
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
           <div>
-            <h2 className="system-title-glow" style={{ fontSize: '1.3rem', margin: 0 }}>
-              NOTIFICATION CENTER
-            </h2>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+            <div className="sl-panel-title" style={{ textAlign: 'left', background: 'none', border: 'none', padding: 0, fontSize: '0.8rem' }}>
+              ◆ NOTIFICATION CENTER // SYSTEM LOG ◆
+            </div>
+            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '8px', fontFamily: 'var(--font-body)' }}>
               Real-time feed of System events, level ascensions, reward unlocks, and deadline warnings.
             </p>
           </div>
@@ -80,53 +90,49 @@ export const NotificationsPage: React.FC<Props> = ({ notifications, onRefresh })
             {browserPushStatus !== 'granted' && typeof Notification !== 'undefined' && (
               <button
                 onClick={handleRequestPermission}
-                className="btn-system-secondary"
-                style={{ fontSize: '0.8rem' }}
+                className="sl-btn sl-btn-ghost"
+                style={{ fontSize: '0.72rem' }}
               >
-                🔔 Enable Desktop Push
+                🔔 ENABLE PUSH
               </button>
             )}
             <button
               onClick={handleMarkAllRead}
-              className="btn-system"
-              style={{ fontSize: '0.8rem' }}
+              className="sl-btn sl-btn-primary"
             >
-              Mark All Read ✓
+              MARK ALL READ ✓
             </button>
           </div>
         </div>
 
-        {/* Filters Row */}
-        <div style={{ display: 'flex', gap: '8px', marginTop: '16px', flexWrap: 'wrap' }}>
-          {(['ALL', 'UNREAD', 'QUEST', 'LEVEL_UP', 'REWARD', 'PENALTY', 'WEEKLY_EVALUATION'] as const).map((cat) => (
+        {/* Filter Tabs */}
+        <div style={{ display: 'flex', gap: '6px', marginTop: '16px', flexWrap: 'wrap', borderTop: '1px solid var(--border-subtle)', paddingTop: '16px' }}>
+          {FILTER_TABS.map((cat) => (
             <button
               key={cat}
               onClick={() => {
                 sound.playClick();
                 setFilter(cat);
               }}
-              style={{
-                padding: '6px 12px',
-                background: filter === cat ? 'var(--system-blue-dark)' : 'rgba(255,255,255,0.03)',
-                color: filter === cat ? '#fff' : 'var(--text-secondary)',
-                border: filter === cat ? '1px solid var(--system-blue)' : '1px solid var(--border-subtle)',
-                borderRadius: '6px',
-                fontSize: '0.75rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-              }}
+              className={`sl-tab ${filter === cat ? 'active' : ''}`}
             >
-              {cat}
+              {cat.replace('_', ' ')}
             </button>
           ))}
         </div>
       </div>
 
       {/* Notifications List */}
-      <div className="system-panel" style={{ padding: '20px' }}>
+      <div className="sl-panel" style={{ padding: '20px' }}>
+        <div className="sl-corner-tr" /><div className="sl-corner-bl" /><div className="sl-corner-br" />
         {filtered.length === 0 ? (
-          <div style={{ padding: '50px 0', textAlign: 'center', color: 'var(--text-muted)' }}>
-            No notifications found under selected filter.
+          <div style={{ padding: '50px 0', textAlign: 'center' }}>
+            <div style={{ fontFamily: 'var(--font-hud)', fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '3px' }}>
+              [ NO TRANSMISSIONS ]
+            </div>
+            <p style={{ color: 'var(--text-secondary)', marginTop: '8px', fontFamily: 'var(--font-body)' }}>
+              No notifications found under selected filter.
+            </p>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -134,29 +140,22 @@ export const NotificationsPage: React.FC<Props> = ({ notifications, onRefresh })
               <div
                 key={n.id}
                 style={{
-                  padding: '14px 18px',
-                  background: n.read ? 'rgba(255, 255, 255, 0.01)' : 'rgba(0, 210, 255, 0.05)',
-                  border: n.read ? '1px solid var(--border-subtle)' : '1px solid var(--border-glow)',
-                  borderLeft: `4px solid ${
-                    n.category === 'PENALTY'
-                      ? 'var(--crimson-danger)'
-                      : n.category === 'LEVEL_UP'
-                      ? 'var(--gold-accent)'
-                      : n.category === 'REWARD'
-                      ? 'var(--emerald-success)'
-                      : 'var(--system-blue)'
-                  }`,
-                  borderRadius: '8px',
+                  padding: '14px 16px',
+                  background: n.read ? 'rgba(0, 8, 22, 0.6)' : 'rgba(0, 25, 55, 0.8)',
+                  border: n.read ? '1px solid var(--border-subtle)' : '1px solid var(--border-cyan)',
+                  borderLeft: `3px solid ${getCategoryColor(n.category)}`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   gap: '16px',
+                  transition: 'all 0.2s',
+                  boxShadow: !n.read ? `inset 0 0 30px rgba(0,180,255,0.03)` : 'none',
                 }}
               >
                 <div style={{ flex: 1 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                     <span style={{
-                      fontSize: '0.6rem',
+                      fontSize: '0.58rem',
                       padding: '2px 8px',
                       background: 'rgba(0,212,255,0.1)',
                       border: '1px solid var(--border-cyan)',
@@ -166,35 +165,43 @@ export const NotificationsPage: React.FC<Props> = ({ notifications, onRefresh })
                     }}>
                       [ ROVION SYSTEM ]
                     </span>
-                    <span style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'var(--font-hud)' }}>
+                    <span style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'var(--font-hud)', letterSpacing: '1px' }}>
                       {n.title}
                     </span>
                     {!n.read && (
-                      <span style={{ width: '6px', height: '6px', background: 'var(--cyan)', boxShadow: '0 0 6px var(--cyan)' }} />
+                      <span style={{
+                        width: '6px', height: '6px',
+                        background: 'var(--cyan)',
+                        boxShadow: '0 0 6px var(--cyan)',
+                        display: 'inline-block',
+                        flexShrink: 0,
+                      }} />
                     )}
                   </div>
-                  <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-body)' }}>
                     {n.message}
                   </p>
-                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '6px', fontFamily: 'var(--font-mono)' }}>
+                  <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '6px', fontFamily: 'var(--font-mono)', letterSpacing: '1px' }}>
                     {new Date(n.createdAt).toLocaleString()}
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexShrink: 0 }}>
                   {!n.read && (
                     <button
                       onClick={() => handleMarkRead(n.id)}
-                      style={{ background: 'none', border: 'none', color: 'var(--system-blue)', fontSize: '0.8rem', cursor: 'pointer' }}
+                      className="sl-btn sl-btn-ghost"
+                      style={{ fontSize: '0.62rem', padding: '4px 10px', minHeight: 'auto' }}
                     >
-                      Mark Read
+                      READ
                     </button>
                   )}
                   <button
                     onClick={() => handleDelete(n.id)}
-                    style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '0.8rem', cursor: 'pointer' }}
+                    className="sl-btn sl-btn-danger"
+                    style={{ fontSize: '0.62rem', padding: '4px 10px', minHeight: 'auto' }}
                   >
-                    🗑️
+                    ✕
                   </button>
                 </div>
               </div>
