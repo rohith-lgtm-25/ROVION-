@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+out/
+
+# Database / SQLite local data
+*.sqlite
+*.sqlite-journal
+server/system_data.sqlite
+
+# Environment & Credentials
+.env
+.env.local
+*.pem
+
+# IDE / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
